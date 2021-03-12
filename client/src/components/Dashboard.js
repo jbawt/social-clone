@@ -1,6 +1,10 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import Posts from './dashboardPosts/Posts';
+import Posts from './posts/Posts';
+import Profile from './Profile/Profile';
+import Messages from './messages/Messages';
 import { toast } from 'react-toastify';
+
+import './Dashboard.css';
 
 const Dashboard = ({setAuth}) => {
 
@@ -44,10 +48,11 @@ const Dashboard = ({setAuth}) => {
 
   return (
     <Fragment>
-      <h1>Welcome {user}</h1>
-      <h2>Your email is: {email}</h2>
-      <button onClick={e => logout(e)} className="btn btn-primary">Logout</button>
-      <Posts posts={posts}/>
+      <div className="dashboard-container">
+        {user && <Profile user={user} email={email} logout={logout}/>}
+        {posts && <Posts posts={posts}/>}
+        <Messages />
+      </div>
     </Fragment>
   )
 }

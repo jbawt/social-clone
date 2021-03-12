@@ -41,6 +41,17 @@ function App() {
         <div className="container">
           <Switch>
             <Route 
+              exact
+              path="/"
+              render={props => 
+                !isAuthenticated ? (
+                  <Redirect to="/login" />
+                ) : (
+                  <Redirect to="/dashboard" />
+                )
+              }
+            />
+            <Route 
               exact 
               path="/login" 
               render={props => 
