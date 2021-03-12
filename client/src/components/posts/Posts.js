@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import Post from './Post';
 import './Posts.css';
 
-function Posts({posts}) {
+function Posts({posts, setDashboardData, dashboardData}) {
 
-  const [postContent, setPostContent] = useState("");
+  const [postContent, setPostContent] = useState({
+    content: ""
+  });
 
   const postList = posts.map((postInfo) => {
     return (
@@ -13,15 +15,28 @@ function Posts({posts}) {
   })
 
   const onChange = (e) => {
-    setPostContent(e.target.value);
+    setPostContent({[e.target.name]: [e.target.value]});
   }
 
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
 
     try {
       // logic for posting new posts to the database once route is created
+      const body = postContent;
 
+      const response = await fetch("http://localhost:3003/dashboard/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.token
+        },
+        body: JSON.stringify(body)
+      });
+
+      const parseRes = await response.json();
+      setDashboardData({...dashboardData, posts: [...dashboardData.posts, parseRes]});
+      // console.log(parseRes);
       
     } catch (error) {
       console.error(error.message);
@@ -38,7 +53,7 @@ function Posts({posts}) {
             <textarea
               name="content"
               placeholder="Type post here"
-              value={postContent}
+              value={postContent.content}
               onChange={(e) => onChange(e)}
             />
             <button type="submit" className="btn btn-success submit-btn">Post</button>

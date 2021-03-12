@@ -17,6 +17,20 @@ router.get("/", authorization, async (req, res) => {
     console.log(error.message);
     res.status(500).send("Server Error");
   }
+});
+
+router.post("/post", authorization, async(req, res) => {
+  try {
+    const content = req.body.content[0];
+    const results = await pool.query("INSERT INTO posts (user_id, content) VALUES ($1, $2) RETURNING post_id", [req.user, content]);
+    const updatePage = await pool.query("SELECT users.user_name as poster, posts.content as post, posts.post_id as id FROM posts JOIN users ON posts.user_id = users.user_id WHERE posts.post_id = $1", [results.rows[0].post_id]);
+
+    res.json(updatePage.rows[0]);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+  
 })
 
 module.exports = router;

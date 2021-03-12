@@ -50,7 +50,7 @@ const Dashboard = ({setAuth}) => {
     <Fragment>
       <div className="dashboard-container">
         {user && <Profile user={user} email={email} logout={logout}/>}
-        {posts && <Posts posts={posts}/>}
+        {posts && <Posts dashboardData={dashboardData} setDashboardData={setDashboardData} posts={posts}/>}
         <Messages />
       </div>
     </Fragment>
