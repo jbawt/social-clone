@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Post from './Post';
+import { toast } from 'react-toastify';
 import './Posts.css';
 
 function Posts({posts, setDashboardData, dashboardData}) {
 
   const [postContent, setPostContent] = useState({
-    content: ""
+    content: "",
+    date: ""
   });
 
   const postList = posts.map((postInfo) => {
@@ -15,7 +17,10 @@ function Posts({posts, setDashboardData, dashboardData}) {
   })
 
   const onChange = (e) => {
-    setPostContent({[e.target.name]: [e.target.value]});
+    setPostContent({
+      content: [e.target.value],
+      date: Date.now()
+    });
   }
 
   const handleSubmitForm = async (e) => {
@@ -36,8 +41,15 @@ function Posts({posts, setDashboardData, dashboardData}) {
 
       const parseRes = await response.json();
       setDashboardData({...dashboardData, posts: [...dashboardData.posts, parseRes]});
-      // console.log(parseRes);
-      
+      setPostContent({
+        content: '',
+        date: '',
+      });
+      toast.success('Posted', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        pauseOnFocusLoss: false
+      });
     } catch (error) {
       console.error(error.message);
     }
@@ -60,7 +72,7 @@ function Posts({posts, setDashboardData, dashboardData}) {
           </form>
         </div>
       </div>
-      {postList}
+      {postList.reverse()}
     </div>
   )
 }
