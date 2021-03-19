@@ -9,12 +9,13 @@ import './Dashboard.css';
 const Dashboard = ({setAuth}) => {
 
   const [dashboardData, setDashboardData] = useState({
+    users: [],
     user: "",
     email: "",
-    posts: ""
+    posts: []
   });
 
-  const { user, email, posts } = dashboardData;
+  const { user, email, posts, users } = dashboardData;
 
   async function getData() {
     try {
@@ -25,6 +26,7 @@ const Dashboard = ({setAuth}) => {
 
       const parseRes = await response.json();
       setDashboardData({
+        users: parseRes.users,
         user: parseRes.user.user_name,
         email: parseRes.user.user_email,
         posts: parseRes.posts
@@ -51,7 +53,7 @@ const Dashboard = ({setAuth}) => {
       <div className="dashboard-container">
         {user && <Profile user={user} email={email} logout={logout}/>}
         {posts && <Posts dashboardData={dashboardData} setDashboardData={setDashboardData} posts={posts}/>}
-        <Messages username={user}/>
+        <Messages username={user} users={users}/>
       </div>
     </Fragment>
   )
