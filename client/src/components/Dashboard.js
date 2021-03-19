@@ -16,7 +16,7 @@ const Dashboard = ({setAuth}) => {
 
   const { user, email, posts } = dashboardData;
 
-  async function getName() {
+  async function getData() {
     try {
       const response = await fetch("http://localhost:3003/dashboard/", {
         method: "GET",
@@ -43,7 +43,7 @@ const Dashboard = ({setAuth}) => {
   }
 
   useEffect(() => {
-    getName();
+    getData();
   }, []);
 
   return (
@@ -51,7 +51,7 @@ const Dashboard = ({setAuth}) => {
       <div className="dashboard-container">
         {user && <Profile user={user} email={email} logout={logout}/>}
         {posts && <Posts dashboardData={dashboardData} setDashboardData={setDashboardData} posts={posts}/>}
-        <Messages />
+        <Messages username={user}/>
       </div>
     </Fragment>
   )

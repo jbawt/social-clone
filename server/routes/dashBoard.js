@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { json } = require('express');
 const pool = require('../db');
 const authorization = require('../middleware/authorization');
 
