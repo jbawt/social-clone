@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
+import React from 'react';
 import Message from './Message';
 import './Messages.css';
 
-function Messages({ username, users }) {
-  
-  const userList = users.map((info) => {
-    return <Message key={info.user_id} username={username} userInfo={info} />
+function Messages({ username, users, setSelectedUser }) {
+  const currentUserRemoved = users.filter(user => user.user_name !== username);
+
+  const userList = currentUserRemoved.map((info) => {
+    return <Message key={info.user_id} setSelectedUser={setSelectedUser} username={username} userInfo={info} />
   })
 
   return (

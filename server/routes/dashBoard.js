@@ -8,11 +8,13 @@ router.get("/", authorization, async (req, res) => {
     const user = await pool.query("SELECT user_name, user_email FROM users WHERE user_id = $1", [req.user]);
     const posts = await pool.query("SELECT users.user_name as poster, posts.content as post, posts.post_id as id, posts.created_at as created_at FROM posts JOIN users ON posts.user_id = users.user_id");
     const users = await pool.query("SELECT * FROM users");
+    const messages = await pool.query("SELECT * FROM messages");
 
     const results = {
       user: user.rows[0],
       posts: posts.rows,
-      users: users.rows
+      users: users.rows,
+      messages: messages.rows
     }
     res.json(results);
   } catch (error) {
@@ -38,8 +40,8 @@ router.post("/post", authorization, async(req, res) => {
 
 router.post('/message', authorization, async(req, res) => {
   try {
-    const { message, date, recepient_id } = req.body;
-    const results = await pool.query("INSERT INTO messages (sender_id, recepient_id, message, created_at) VALUES ($1, $2, $3, $4) RETURNING *", [req.user, recepient_id, message, date]);
+    const { message, created_at, recepient_id } = req.body;
+    const results = await pool.query("INSERT INTO messages (sender_id, recepient_id, message, created_at) VALUES ($1, $2, $3, $4) RETURNING *", [req.user, recepient_id, message, created_at]);
     
     res.json(results.rows[0]);
   } catch (error) {

@@ -2,18 +2,28 @@
   width: 50%;
 }
 
+.feed-title {
+  margin-top: 2%;
+  text-decoration: underline;
+}
+
 .new-post-container {
+  position: sticky;
+  top: 0;
   border-bottom: 2px solid white;
+  background-color: lightslategray;
+  display: flex;
 }
 
 .new-post {
   border-left: 2px solid rgb(92, 92, 92);
   border-right: 2px solid rgb(92, 92, 92);
   border-radius: 10px;
-  height: 25vh;
+  height: 20vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;  
   justify-content: center;
   background-color: rgba(46, 42, 42, 0.993);
 }

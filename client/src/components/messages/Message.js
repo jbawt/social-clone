@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import React from 'react';
 import './Message.css'
 
-const socket = io("http://localhost:3003/", {
-  transports: ["websocket", "polling"]
-});
-
-function Message({ username, userInfo }) {
+function Message({ userInfo, setSelectedUser }) {
   // const [messageData, setMessageData] = useState({
   //   message: "",
   //   received: []
@@ -74,8 +69,16 @@ function Message({ username, userInfo }) {
   //     </div>
   //   </div>
   // )
+
+  const handleSelect = () => {
+    setSelectedUser({
+      selectedUserId: userInfo.user_id,
+      selectedUserName: userInfo.user_name
+    })
+  }
+
   return (
-    <div className="message-box">
+    <div onClick={handleSelect} className="message-box">
       <h3>{userInfo.user_name}</h3>
     </div>
   )

@@ -3,8 +3,13 @@ import Posts from './posts/Posts';
 import Profile from './Profile/Profile';
 import Messages from './messages/Messages';
 import { toast } from 'react-toastify';
+import { io } from 'socket.io-client';
 
 import './Dashboard.css';
+
+const socket = io("http://10.0.0.102:3003", {
+  transports: ["websocket", "polling"]
+})
 
 const Dashboard = ({setAuth}) => {
 
@@ -15,11 +20,23 @@ const Dashboard = ({setAuth}) => {
     posts: []
   });
 
+  const [selectedUser, setSelectedUser] = useState({
+    selectedUserId: "",
+    selectedUserName: "Chat with someone!"
+  })
+
+  const [messageData, setMessageData] = useState({
+    message: "",
+    received: []
+  })
+
   const { user, email, posts, users } = dashboardData;
+  const { selectedUserId, selectedUserName } = selectedUser;
+  const { message, received } = messageData;
 
   async function getData() {
     try {
-      const response = await fetch("http://localhost:3003/dashboard/", {
+      const response = await fetch("http://10.0.0.102:3003/dashboard/", {
         method: "GET",
         headers: {token: localStorage.token}
       });
@@ -31,8 +48,40 @@ const Dashboard = ({setAuth}) => {
         email: parseRes.user.user_email,
         posts: parseRes.posts
       })
+      setMessageData({
+        ...messageData,
+        received: parseRes.messages
+      })
     } catch (error) {
       console.error(error.message)
+    }
+  }
+
+  const postMessage = async() => {
+    const body = {
+      recepient_id: selectedUserId,
+      message: message,
+      created_at: Date.now()
+    }
+
+    try {
+      const response = await fetch("http://10.0.0.102:3003/dashboard/message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.token
+        },
+        body: JSON.stringify(body)
+      })
+
+      const parseRes = await response.json();
+      setMessageData({
+        message: "",
+        received: [...received, parseRes]
+      })
+
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
@@ -51,9 +100,9 @@ const Dashboard = ({setAuth}) => {
   return (
     <Fragment>
       <div className="dashboard-container">
-        {user && <Profile user={user} email={email} logout={logout}/>}
+        {user && <Profile postMessage={postMessage} selectedUserName={selectedUserName} user={user} email={email} logout={logout} setMessageData={setMessageData} messageData={messageData}/>}
         {posts && <Posts dashboardData={dashboardData} setDashboardData={setDashboardData} posts={posts}/>}
-        <Messages username={user} users={users}/>
+        <Messages setSelectedUser={setSelectedUser} username={user} users={users}/>
       </div>
     </Fragment>
   )

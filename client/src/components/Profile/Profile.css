@@ -2,7 +2,6 @@
   width: 25%;
   height: 98vh;
   margin-left: 2%;
-  border: 2px solid red;
   position: sticky;
   top: 1%;
 }
@@ -20,7 +19,7 @@
 }
 
 .logout-btn {
-  margin: 30% 0 5% 0;
+  margin: 25% 0 5% 0;
 }
 
 .profile-div  h1 {
@@ -29,4 +28,9 @@
 
 .profile-div  h3 {
   margin-top: 15%;
+}
+
+.chat-window {
+  height: 75%;
+  margin-top: 4%;
 }

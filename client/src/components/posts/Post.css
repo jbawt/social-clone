@@ -19,6 +19,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  word-wrap: break-word;
+  word-break: break-all;
   padding: 0 3% 0 3%;
   margin: 0;
   background-color: rgb(61, 61, 61);
