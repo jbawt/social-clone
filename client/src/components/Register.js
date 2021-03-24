@@ -20,7 +20,7 @@ const Register = ({ setAuth }) => {
     try {
       const body = {email, password, name};
 
-      const response = await fetch("http://localhost:3003/auth/register", {
+      const response = await fetch("http://192.168.1.77:3003/auth/register", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)

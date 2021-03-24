@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 
 import './Dashboard.css';
 
-const socket = io("http://10.0.0.102:3003", {
+const socket = io("http://192.168.1.77:3003", {
   transports: ["websocket", "polling"]
 })
 
@@ -27,6 +27,7 @@ const Dashboard = ({setAuth}) => {
 
   const [messageData, setMessageData] = useState({
     message: "",
+    userId: "",
     received: []
   })
 
@@ -36,7 +37,7 @@ const Dashboard = ({setAuth}) => {
 
   async function getData() {
     try {
-      const response = await fetch("http://10.0.0.102:3003/dashboard/", {
+      const response = await fetch("http://192.168.1.77:3003/dashboard/", {
         method: "GET",
         headers: {token: localStorage.token}
       });
@@ -50,8 +51,10 @@ const Dashboard = ({setAuth}) => {
       })
       setMessageData({
         ...messageData,
-        received: parseRes.messages
+        received: parseRes.messages,
+        userId: parseRes.user.user_id
       })
+      
     } catch (error) {
       console.error(error.message)
     }
@@ -65,7 +68,7 @@ const Dashboard = ({setAuth}) => {
     }
 
     try {
-      const response = await fetch("http://10.0.0.102:3003/dashboard/message", {
+      const response = await fetch("http://192.168.1.77:3003/dashboard/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,9 +103,30 @@ const Dashboard = ({setAuth}) => {
   return (
     <Fragment>
       <div className="dashboard-container">
-        {user && <Profile postMessage={postMessage} selectedUserName={selectedUserName} user={user} email={email} logout={logout} setMessageData={setMessageData} messageData={messageData}/>}
-        {posts && <Posts dashboardData={dashboardData} setDashboardData={setDashboardData} posts={posts}/>}
-        <Messages setSelectedUser={setSelectedUser} username={user} users={users}/>
+        {user && 
+          <Profile 
+            postMessage={postMessage} 
+            selectedUserName={selectedUserName}
+            selectedUserId={selectedUserId} 
+            user={user} 
+            email={email} 
+            logout={logout} 
+            setMessageData={setMessageData} 
+            messageData={messageData}
+          />
+        }
+        {posts && 
+          <Posts 
+            dashboardData={dashboardData} 
+            setDashboardData={setDashboardData} 
+            posts={posts}
+          />
+        }
+        <Messages 
+          setSelectedUser={setSelectedUser} 
+          username={user} 
+          users={users}
+        />
       </div>
     </Fragment>
   )

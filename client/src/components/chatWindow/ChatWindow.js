@@ -1,22 +1,42 @@
 import React from 'react';
+import MessageContainer from './MessageContainer';
 import './ChatWindow.css';
 
-function ChatWindow({ selectedUserName, setMessageData, messageData, postMessage }) {
+function ChatWindow({ selectedUserName, selectedUserId, setMessageData, messageData, postMessage }) {
 
-  const { message, received } = messageData;
+  const { message, received, userId } = messageData;
 
   const onChange = (e) => {
     setMessageData({
-      received: received,
+      ...messageData,
       message: e.target.value
     })
   }
+
+  const sentMessages = received.filter(message => {
+    return message.recepient_id === selectedUserId && message.sender_id === userId;
+  });
+
+  const receivedMessages = received.filter(message => {
+    return message.recepient_id === userId && message.sender_id === selectedUserId;
+  })
+
+  const messages = [...receivedMessages, ...sentMessages];
+
+  const messageList = messages.map(message => {
+    return (
+      <MessageContainer 
+        key={message.message_id} 
+        messageInfo={message}
+      />
+    )
+  })
 
   return (
     <div className="chat-container">
       <div className="message-window">
       <h3>{ selectedUserName }</h3>
-        {/* add message containers */}
+        { messageList }
       </div>
       <div className="input-window">
         <input 

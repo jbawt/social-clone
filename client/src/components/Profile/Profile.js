@@ -4,7 +4,16 @@ import './Profile.css';
 
 function Profile(props) {
 
-  const { user, email, logout, selectedUserName, messageData, setMessageData, postMessage } = props;
+  const { 
+    user, 
+    email, 
+    logout, 
+    selectedUserName, 
+    selectedUserId, 
+    messageData, 
+    setMessageData, 
+    postMessage 
+  } = props;
 
   return (
     <div className="left-container">
@@ -14,7 +23,13 @@ function Profile(props) {
         <button onClick={e => logout(e)} className="btn btn-danger logout-btn">Logout</button>
       </div>
       <div className="chat-window">
-        <ChatWindow postMessage={postMessage} setMessageData={setMessageData} messageData={messageData} selectedUserName={selectedUserName}/>
+        <ChatWindow 
+          postMessage={postMessage} 
+          setMessageData={setMessageData} 
+          messageData={messageData} 
+          selectedUserName={selectedUserName}
+          selectedUserId={selectedUserId}
+        />
       </div>
     </div>
   )
