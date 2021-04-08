@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 
 import './Dashboard.css';
 
-const socket = io("http://192.168.1.77:3003", {
+const socket = io("http://192.168.1.79:3003", {
   transports: ["websocket", "polling"]
 })
 
@@ -37,7 +37,7 @@ const Dashboard = ({setAuth}) => {
 
   async function getData() {
     try {
-      const response = await fetch("http://192.168.1.77:3003/dashboard/", {
+      const response = await fetch("http://192.168.1.73:3003/dashboard/", {
         method: "GET",
         headers: {token: localStorage.token}
       });
@@ -68,7 +68,7 @@ const Dashboard = ({setAuth}) => {
     }
 
     try {
-      const response = await fetch("http://192.168.1.77:3003/dashboard/message", {
+      const response = await fetch("http://192.168.1.73:3003/dashboard/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

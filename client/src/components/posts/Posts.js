@@ -30,7 +30,7 @@ function Posts({posts, setDashboardData, dashboardData}) {
       // logic for posting new posts to the database once route is created
       const body = postContent;
 
-      const response = await fetch("http://192.168.1.77:3003/dashboard/post", {
+      const response = await fetch("http://192.168.1.73:3003/dashboard/post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
