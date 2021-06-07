@@ -10,12 +10,11 @@ import {
   MenuItem,
   Menu,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import { users } from '../fakeData/userInfo';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -102,10 +101,6 @@ function NavBar() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (e) => {
-    setMobileMoreAnchorEl(e.currentTarget);
-  };
-
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -167,14 +162,6 @@ function NavBar() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            colort="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography className={classes.title} variant="h4" noWrap>
             PoStEr
           </Typography>
@@ -193,24 +180,21 @@ function NavBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Typography className={classes.title} variant="h4" noWrap>
+              { users['2'].username }
+            </Typography>
             <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={ users['2'].messages } color="secondary">
                 <MailIcon />
               </Badge>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+              <Badge badgeContent={ users['2'].notifications } color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
+            <IconButton aria-label="show more" color="inherit">
+              <AccountCircle />
             </IconButton>
           </div>
         </Toolbar>
