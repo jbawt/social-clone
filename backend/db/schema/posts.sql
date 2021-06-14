@@ -1,7 +1,0 @@
-DROP TABLE IF EXISTS posts CASCADE;
-CREATE TABLE posts (
-  post_id SERIAL PRIMARY KEY NOT NULL,
-  user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
-  content TEXT NOT NULL,
-  post_date DATE NOT NULL
-);

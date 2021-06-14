@@ -1,8 +1,0 @@
-DROP TABLE IF EXISTS comments CASCADE;
-CREATE TABLE comments (
-  comment_id SERIAL PRIMARY KEY NOT NULL,
-  post_id INTEGER REFERENCES posts(post_id) ON DELETE CASCADE,
-  user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
-  content TEXT NOT NULL,
-  comment_date DATE NOT NULL
-);
