@@ -3,19 +3,22 @@ import { makeStyles } from '@material-ui/styles'
 import {
   Typography,
 } from '@material-ui/core';
+const dateFormat = require('dateformat');
 
 const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
     border: '2px solid black',
+    borderRadius: '10px',
     minHeight: '15vh',
-    background: 'lightslategrey',
+    background: 'white',
     margin: '2% 0 2% 0',
   },
   content: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    margin: '1% 2% 0 2%',
   },
   title: {
     borderBottom: '2px solid black',
@@ -31,13 +34,15 @@ function FeedItem({postInfo}) {
 
   const { post, user, date } = postInfo;
 
+  const formattedDate = dateFormat(date, "mmm dS h:MM TT");
+
   return (
     <div className={classes.root}>
       <div className={classes.title}>
-        <h1>{user}</h1>
-        <p>{date}</p>
+        <h3>{user}</h3>
+        <p>{formattedDate}</p>
       </div>
-      <Typography variant="h5" className={classes.content}>
+      <Typography variant="h6" className={classes.content}>
         {post}
       </Typography>
     </div>

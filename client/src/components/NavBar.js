@@ -83,7 +83,7 @@ function NavBar({state}) {
               <SearchIcon />
             </div>
             <InputBase 
-              placeholder="Search..."
+              placeholder="Search Threads"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

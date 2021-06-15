@@ -3,10 +3,18 @@ import axios from 'axios';
 
 import NavBar from './components/NavBar';
 import Feed from './components/Feed';
+import { makeStyles } from '@material-ui/styles';
 import './App.css';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    background: 'lightslategray',
+  },
+}));
 
 function App() {
 
+  const classes = useStyles();
 
   /*
   no need to get all users, just user logged in.
@@ -38,7 +46,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className={classes.root}>
       <NavBar state={state} />
       <Feed state={state} />
     </div>
