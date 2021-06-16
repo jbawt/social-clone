@@ -1,8 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/styles'
 import {
+  Button,
   Typography,
 } from '@material-ui/core';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 const dateFormat = require('dateformat');
 
 const useStyles = makeStyles(() => ({
@@ -10,8 +12,8 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     border: '2px solid black',
     borderRadius: '10px',
-    minHeight: '15vh',
-    background: 'white',
+    minHeight: '5vh',
+    background: '#5b85aa',
     margin: '2% 0 2% 0',
   },
   content: {
@@ -19,13 +21,20 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     margin: '1% 2% 0 2%',
+    minHeight: '5vh',
   },
   title: {
     borderBottom: '2px solid black',
     display: 'flex',
     justifyContent: 'space-between',
     margin: '0 2% 0 2%',
-  }
+  },
+  readThreadDiv: {
+    width: '95%',
+    marginLeft: '2%',
+    padding: '0 0 0 1%',
+    margin: '0 0 1% 0',
+  },
 }))
 
 function FeedItem({postInfo}) {
@@ -45,6 +54,12 @@ function FeedItem({postInfo}) {
       <Typography variant="h6" className={classes.content}>
         {post}
       </Typography>
+      <div className={classes.readThreadDiv}>
+        <Button variant="contained">
+          Read More
+          <KeyboardArrowRightIcon />
+        </Button>
+      </div>
     </div>
   )
 }

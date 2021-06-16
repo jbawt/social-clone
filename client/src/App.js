@@ -9,6 +9,7 @@ import './App.css';
 const useStyles = makeStyles(() => ({
   root: {
     background: 'lightslategray',
+    minHeight: '94.15vh'
   },
 }));
 
@@ -48,7 +49,7 @@ function App() {
   return (
     <div className={classes.root}>
       <NavBar state={state} />
-      <Feed state={state} />
+      <Feed state={state} setState={setState} />
     </div>
   );
 }

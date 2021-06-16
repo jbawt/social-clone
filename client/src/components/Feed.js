@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import {
   TextField,
   Button,
 } from '@material-ui/core';
 import FeedItem from './FeedItem';
+import dateFormat from 'dateformat';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,13 +29,27 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Feed({state}) {
+function Feed({state, setState}) {
 
   const classes = useStyles();
+  const url = 'http://localhost:8080';
+
+  const [postContent, setPostContent] = useState('');
+
+  const handlePostContent = (e) => {
+    setPostContent(e.target.value);
+  }
+
+  const handleSubmit = () => {
+    axios.post(`${url}/api/newPost`, {userId: `${state.userId}`, content: postContent, postDate: dateFormat(Date.now(), 'isoUtcDateTime')})
+    .catch(err => console.log(err)); 
+    
+    setPostContent('');
+  }
 
   const posts = state.posts.map((postInfo) => {
     return (
-      <FeedItem postInfo={postInfo} />
+      <FeedItem key={postInfo.post_id} postInfo={postInfo} />
     )
   })
 
@@ -46,13 +62,19 @@ function Feed({state}) {
             label="Create Thread"
             placeholder="What's on your mind?"
             multiline
+            onChange={e => handlePostContent(e)}
+            value={postContent}
           />
-          <Button variant="contained" color="primary">
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={() => handleSubmit()}  
+          >
             Post
           </Button>
         </div>
       </form>
-      {posts.reverse()}
+      {posts}
     </div>
   )
 }
