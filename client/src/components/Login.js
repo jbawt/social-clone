@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Container,
@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -50,9 +51,56 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function Login() {
+function Login({ setState, state }) {
 
   const classes = useStyles();
+
+  const [loginInfo, setLoginInfo] = useState({
+    email: "",
+    password: ""
+  });
+  
+  const handleLoginInfo = (e, field) => {
+    if (field === "email") {
+      setLoginInfo({
+        ...loginInfo,
+        email: e.target.value
+      })
+    } else if (field === "password") {
+      setLoginInfo({
+        ...loginInfo,
+        password: e.target.value
+      })
+    }
+  };
+
+  const handleSubmit = () => {
+
+    const payload = JSON.stringify(loginInfo);
+    
+    axios.post('http://localhost:8080/api/login', payload, {
+      headers: {
+        "content-type": "application/json"
+      }
+    })
+      .then(response => {
+        if (response.data.access === "denied" ) {
+          console.log("unauthorized");
+        } else {
+          setState({
+            ...state,
+            userId: response.data[0].user_id,
+            userName: response.data[0].user_name,
+            email: response.data[0].email,
+            isLoggedIn: true
+          })
+        }
+      })
+      .then(() => {
+        console.log(state);
+      })
+      .catch(err => console.log(err));
+  }
 
   return (
     <Container>
@@ -62,11 +110,24 @@ function Login() {
       </Typography>
       <Container className={classes.container}>
         <h1>Login</h1>
-        <TextField className={classes.input} id="outlined-basic" label="Email" variant="outlined" />
-        <TextField type="password" className={classes.input} id="outlined-basic" label="Password" variant="outlined" />
+        <TextField 
+          className={classes.input} 
+          label="Email" 
+          variant="outlined" 
+          value={loginInfo.email}
+          onChange={(e) => handleLoginInfo(e, "email")}  
+        />
+        <TextField 
+          type="password" 
+          className={classes.input} 
+          label="Password" 
+          variant="outlined" 
+          value={loginInfo.password}
+          onChange={(e) => handleLoginInfo(e, "password")}
+        />
         <div className={classes.buttons}>
-          <Link to='/feed'>
-            <Button variant="contained" color="primary">Login</Button>
+          <Link to="/feed">
+            <Button onClick={() => handleSubmit()} variant="contained" color="primary">Login</Button>
           </Link>
           <Button variant="contained" color="secondary">Register</Button>
         </div>

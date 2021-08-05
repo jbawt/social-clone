@@ -12,6 +12,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -67,9 +68,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NavBar({state}) {
+function NavBar({state, setState}) {
   
   const classes = useStyles();
+
+  const handleLogout = () => {
+    setState({
+      ...state,
+      isLoggedIn: false
+    })
+  }
 
   return (
     <div className={classes.grow}>
@@ -102,12 +110,15 @@ function NavBar({state}) {
               </Badge>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
             <IconButton aria-label="show more" color="inherit">
               <AccountCircle />
+            </IconButton>
+            <IconButton onClick={() => handleLogout()} aria-label="log-out" color="inherit">
+              <ExitToAppIcon />
             </IconButton>
           </div>
         </Toolbar>

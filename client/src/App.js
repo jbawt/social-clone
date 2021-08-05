@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 
 import NavBar from './components/NavBar';
@@ -8,6 +8,7 @@ import Login from './components/Login';
 
 import { makeStyles } from '@material-ui/styles';
 import './App.css';
+import { Fragment } from 'react';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,12 +25,13 @@ function App() {
   no need to get all users, just user logged in.
   */
   const [state, setState] = useState({
-    userId: 1,
-    userName: 'jbawt',
-    email: 'jbawtinheimer@gmail.com',
+    userId: '',
+    userName: '',
+    email: '',
     users: [],
     posts: [],
-    comments: []
+    comments: [],
+    isLoggedIn: false,
   });
 
   const url = 'http://localhost:8080';
@@ -54,11 +56,32 @@ function App() {
       <div className={classes.root}>
           <Switch>
             <Route exact path="/">
-              <Login />
+              {
+                state.isLoggedIn ? 
+                  <Redirect to="/feed" /> 
+                  : 
+                  <Login 
+                    setState={setState}
+                    state={state}
+                  />
+                  }
             </Route>
             <Route path="/feed">
-              <NavBar state={state} />
-              <Feed state={state} setState={setState} />  
+              {
+                state.isLoggedIn ?
+                  <Fragment>
+                    <NavBar 
+                      state={state} 
+                      setState={setState}  
+                    />
+                    <Feed 
+                      state={state} 
+                      setState={setState} 
+                    />
+                  </Fragment> 
+                  :
+                  <Redirect to="/" />
+              }
             </Route>
           </Switch>
       </div>
