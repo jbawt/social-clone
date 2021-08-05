@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 
 import NavBar from './components/NavBar';
 import Feed from './components/Feed';
+import Login from './components/Login';
+
 import { makeStyles } from '@material-ui/styles';
 import './App.css';
 
 const useStyles = makeStyles(() => ({
   root: {
     background: 'lightslategray',
-    minHeight: '94.15vh'
+    minHeight: '100vh'
   },
 }));
 
@@ -47,10 +50,19 @@ function App() {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <NavBar state={state} />
-      <Feed state={state} setState={setState} />
-    </div>
+    <Router>
+      <div className={classes.root}>
+          <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route path="/feed">
+              <NavBar state={state} />
+              <Feed state={state} setState={setState} />  
+            </Route>
+          </Switch>
+      </div>
+    </Router>
   );
 }
 
