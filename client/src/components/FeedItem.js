@@ -5,6 +5,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import { Link } from 'react-router-dom';
+
 const dateFormat = require('dateformat');
 
 const useStyles = makeStyles(() => ({
@@ -39,7 +41,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-function FeedItem({postInfo, comments}) {
+function FeedItem({postInfo, comments, setSelectedPost}) {
 
   const classes = useStyles();
 
@@ -48,6 +50,10 @@ function FeedItem({postInfo, comments}) {
   const commentList = comments.filter(comment => comment.post_id === postInfo.post_id);
 
   const formattedDate = dateFormat(date, "mmm dS");
+
+  const handlePostSelect = () => {
+    setSelectedPost(postInfo.post_id)
+  }
 
   return (
     <div className={classes.root}>
@@ -59,10 +65,12 @@ function FeedItem({postInfo, comments}) {
         {post}
       </Typography>
       <div className={classes.readThreadDiv}>
-        <Button variant="contained">
-          Read More
-          <KeyboardArrowRightIcon />
-        </Button>
+        <Link to="/post">
+          <Button onClick={() => handlePostSelect()} variant="contained">
+            Read More
+            <KeyboardArrowRightIcon />
+          </Button>
+        </Link>
         <p>Replies: { commentList.length }</p>
       </div>
     </div>

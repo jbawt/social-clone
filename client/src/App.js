@@ -8,6 +8,7 @@ import NavBar from './components/NavBar';
 import Feed from './components/Feed';
 import Login from './components/Login';
 import Register from './components/Register';
+import Post from './components/Post';
 
 import { makeStyles } from '@material-ui/styles';
 import './App.css';
@@ -36,6 +37,8 @@ function App() {
     comments: [],
     isLoggedIn: false,
   });
+
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const url = 'http://localhost:8080';
 
@@ -86,9 +89,28 @@ function App() {
                     />
                     <Feed 
                       state={state} 
-                      setState={setState} 
+                      setState={setState}
+                      setSelectedPost={setSelectedPost}
                     />
                   </Fragment> 
+                  :
+                  <Redirect to="/" />
+              }
+            </Route>
+            <Route path="/post">
+              {
+                state.isLoggedIn ?
+                  <Fragment>
+                    <NavBar 
+                      state={state}
+                      setState={setState}
+                    />
+                    <Post 
+                      selectedPost={selectedPost}
+                      posts={state.posts}
+                      comments={state.comments}
+                    />
+                  </Fragment>
                   :
                   <Redirect to="/" />
               }

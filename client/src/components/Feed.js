@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Feed({state, setState}) {
+function Feed({state, setState, setSelectedPost}) {
   
   const classes = useStyles();
   const url = 'http://localhost:8080';
@@ -71,7 +71,8 @@ function Feed({state, setState}) {
       <FeedItem 
         key={postInfo.post_id}
         postInfo={postInfo} 
-        comments={state.comments} 
+        comments={state.comments}
+        setSelectedPost={setSelectedPost}
       />
     )
   })
