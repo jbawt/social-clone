@@ -7,6 +7,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { toast } from 'react-toastify';
+
 import { makeStyles } from '@material-ui/styles';
 import axios from 'axios';
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
   input: {
     width: '50%',
-    marginTop: '10%',
+    marginTop: '5%',
   },
   buttons: {
     display: 'flex',
@@ -58,42 +59,45 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function Login({ setState, state }) {
+function Register({ setState, state }) {
 
   const classes = useStyles();
 
-  const [loginInfo, setLoginInfo] = useState({
+  const [registerInfo, setRegisterInfo] = useState({
+    userName: "",
     email: "",
     password: ""
   });
   
-  const handleLoginInfo = (e, field) => {
+  const handleRegisterInfo = (e, field) => {
     if (field === "email") {
-      setLoginInfo({
-        ...loginInfo,
+      setRegisterInfo({
+        ...registerInfo,
         email: e.target.value
       })
     } else if (field === "password") {
-      setLoginInfo({
-        ...loginInfo,
+      setRegisterInfo({
+        ...registerInfo,
         password: e.target.value
+      })
+    } else if (field === "userName") {
+      setRegisterInfo({
+        ...registerInfo,
+        userName: e.target.value
       })
     }
   };
 
   const handleSubmit = () => {
 
-    const payload = JSON.stringify(loginInfo);
+    const payload = JSON.stringify(registerInfo);
     
-    axios.post('http://localhost:8080/api/login', payload, {
+    axios.post('http://localhost:8080/api/newUser', payload, {
       headers: {
         "content-type": "application/json"
       }
     })
       .then(response => {
-        if (response.data.access === "denied" ) {
-          toast.warn("Invalid login credentials", { hideProgressBar: true, position: toast.POSITION.TOP_CENTER })
-        } else {
           setState({
             ...state,
             userId: response.data[0].user_id,
@@ -101,8 +105,7 @@ function Login({ setState, state }) {
             email: response.data[0].email,
             isLoggedIn: true
           })
-          toast.success("Login successful", { autoClose: 3000, hideProgressBar: true });
-        }
+          toast.success("Successfully registered", { autoClose: 3000, hideProgressBar: true });
       })
       .catch(err => console.log(err));
   }
@@ -114,30 +117,38 @@ function Login({ setState, state }) {
         Welcome to PosteR. A place to keep up with your friends
       </Typography>
         <Container className={classes.container}>
-          <h1>Login</h1>
+          <h1>Register</h1>
+          <TextField 
+            type="text" 
+            className={classes.input} 
+            label="Username" 
+            variant="outlined" 
+            value={registerInfo.userName}
+            onChange={(e) => handleRegisterInfo(e, "userName")}
+          />
           <TextField 
             className={classes.input} 
             label="Email" 
             variant="outlined" 
-            value={loginInfo.email}
-            onChange={(e) => handleLoginInfo(e, "email")}  
+            value={registerInfo.email}
+            onChange={(e) => handleRegisterInfo(e, "email")}  
           />
           <TextField 
             type="password" 
             className={classes.input} 
             label="Password" 
             variant="outlined" 
-            value={loginInfo.password}
-            onChange={(e) => handleLoginInfo(e, "password")}
+            value={registerInfo.password}
+            onChange={(e) => handleRegisterInfo(e, "password")}
           />
           <div className={classes.buttons}>
             <Link to="/feed">
-              <Button onClick={() => handleSubmit()} variant="contained" color="primary">Login</Button>
+              <Button onClick={() => handleSubmit()} variant="contained" color="primary">Register</Button>
             </Link>
             <div className={classes.align}>
-              <p>Don't have an account? click here</p>
-              <Link to="/register">
-                <Button variant="contained" color="secondary">Register</Button>
+              <p>Already have an account? click here</p>
+              <Link to="/">
+                <Button variant="contained" color="secondary">Login</Button>
               </Link>
             </div>
           </div>
@@ -146,4 +157,4 @@ function Login({ setState, state }) {
   )
 }
 
-export default Login
+export default Register

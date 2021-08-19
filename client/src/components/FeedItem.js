@@ -34,16 +34,20 @@ const useStyles = makeStyles(() => ({
     marginLeft: '2%',
     padding: '0 0 0 1%',
     margin: '0 0 1% 0',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
 }))
 
-function FeedItem({postInfo}) {
+function FeedItem({postInfo, comments}) {
 
   const classes = useStyles();
 
   const { post, user, date } = postInfo;
+  
+  const commentList = comments.filter(comment => comment.post_id === postInfo.post_id);
 
-  const formattedDate = dateFormat(date, "mmm dS h:MM TT");
+  const formattedDate = dateFormat(date, "mmm dS");
 
   return (
     <div className={classes.root}>
@@ -59,6 +63,7 @@ function FeedItem({postInfo}) {
           Read More
           <KeyboardArrowRightIcon />
         </Button>
+        <p>Replies: { commentList.length }</p>
       </div>
     </div>
   )

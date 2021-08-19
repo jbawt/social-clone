@@ -13,6 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -75,8 +76,12 @@ function NavBar({state, setState}) {
   const handleLogout = () => {
     setState({
       ...state,
+      userId: '',
+      userName: '',
+      email: '',
       isLoggedIn: false
     })
+    toast.error("Logout successful", { hideProgressBar: true, autoClose: 3000 });
   }
 
   return (

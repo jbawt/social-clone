@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import NavBar from './components/NavBar';
 import Feed from './components/Feed';
 import Login from './components/Login';
+import Register from './components/Register';
 
 import { makeStyles } from '@material-ui/styles';
 import './App.css';
@@ -54,6 +57,7 @@ function App() {
   return (
     <Router>
       <div className={classes.root}>
+        <ToastContainer />
           <Switch>
             <Route exact path="/">
               {
@@ -65,6 +69,12 @@ function App() {
                     state={state}
                   />
                   }
+            </Route>
+            <Route path="/register">
+              <Register 
+                setState={setState}
+                state={state}
+              />
             </Route>
             <Route path="/feed">
               {

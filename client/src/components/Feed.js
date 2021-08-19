@@ -30,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Feed({state, setState}) {
-
+  
   const classes = useStyles();
   const url = 'http://localhost:8080';
-
+  
   const [postContent, setPostContent] = useState('');
 
   const handlePostContent = (e) => {
@@ -41,7 +41,26 @@ function Feed({state, setState}) {
   }
 
   const handleSubmit = () => {
-    axios.post(`${url}/api/newPost`, {userId: `${state.userId}`, content: postContent, postDate: dateFormat(Date.now(), 'isoUtcDateTime')})
+
+    const postData = {
+      userId: `${state.userId}`,
+      content: postContent,
+      postDate: dateFormat(Date.now(), 'isoUtcDateTime')
+    };
+
+    axios.post(`${url}/api/newPost`, postData)
+    .then(() => {
+      const newPost = {
+        user: state.userName,
+        post: postContent,
+        date: postData.postDate
+      }
+      setState({
+        ...state,
+        posts: [newPost, ...state.posts]
+      })
+      console.log(state.posts);
+    })
     .catch(err => console.log(err)); 
     
     setPostContent('');
@@ -49,9 +68,14 @@ function Feed({state, setState}) {
 
   const posts = state.posts.map((postInfo) => {
     return (
-      <FeedItem key={postInfo.post_id} postInfo={postInfo} />
+      <FeedItem 
+        key={postInfo.post_id}
+        postInfo={postInfo} 
+        comments={state.comments} 
+      />
     )
   })
+
 
   return (
     <div className={classes.root}>
