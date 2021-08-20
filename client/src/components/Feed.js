@@ -59,7 +59,6 @@ function Feed({state, setState, setSelectedPost}) {
         ...state,
         posts: [newPost, ...state.posts]
       })
-      console.log(state.posts);
     })
     .catch(err => console.log(err)); 
     

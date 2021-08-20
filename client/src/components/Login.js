@@ -55,6 +55,9 @@ const useStyles = makeStyles(() => ({
     fontSize: '1.5em',
     position: 'relative',
     top: '5vh',
+  },
+  link: {
+    textDecoration: 'none',
   }
 }));
 
@@ -131,12 +134,12 @@ function Login({ setState, state }) {
             onChange={(e) => handleLoginInfo(e, "password")}
           />
           <div className={classes.buttons}>
-            <Link to="/feed">
+            <Link className={classes.link} to="/feed">
               <Button onClick={() => handleSubmit()} variant="contained" color="primary">Login</Button>
             </Link>
             <div className={classes.align}>
               <p>Don't have an account? click here</p>
-              <Link to="/register">
+              <Link className={classes.link} to="/register">
                 <Button variant="contained" color="secondary">Register</Button>
               </Link>
             </div>

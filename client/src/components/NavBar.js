@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -7,6 +8,7 @@ import {
   Typography,
   InputBase,
   Badge,
+  Button,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -20,10 +22,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   title: {
-    dispaly: 'none',
+    display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
+    color: 'white',
   },
   search: {
     position: 'relative',
@@ -67,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
   },
+  link: {
+    textDecoration: 'none',
+  }
 }));
 
 function NavBar({state, setState}) {
@@ -104,6 +110,11 @@ function NavBar({state, setState}) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
+          <Link className={classes.link} to="/feed">
+              <Button variant="contained" color="secondary">
+                Feed
+              </Button>
+          </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Typography className={classes.title} variant="h4" noWrap>

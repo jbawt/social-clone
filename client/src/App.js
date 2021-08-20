@@ -107,8 +107,8 @@ function App() {
                     />
                     <Post 
                       selectedPost={selectedPost}
-                      posts={state.posts}
-                      comments={state.comments}
+                      state={state}
+                      setState={setState}
                     />
                   </Fragment>
                   :
