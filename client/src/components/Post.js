@@ -36,32 +36,17 @@ const useStyles = makeStyles(() => ({
 
 function Post({ selectedPost, state, setState }) {
 
-  const { users, posts, comments } = state;
+  const { posts, comments } = state;
 
   const classes = useStyles();
-  const commentList = comments.filter(comment => comment.post_id === selectedPost);
+  const commentList = comments.filter(comment => comment.post_id === selectedPost)
   const [newComment, setNewComment] = useState('');
 
-  let newCommentList = [];
   let post;
 
   for (let i = 0; i < posts.length; i++) {
     if (selectedPost === posts[i].post_id) {
       post = posts[i];
-    }
-  }
-
-  for (let i = 0; i < users.length; i++) {
-    for (let j = 0; j < commentList.length; j++) {
-      if (users[i].user_id === commentList[j].user_id) {
-        const comment = {
-          userName: users[i].user_name,
-          content: commentList[j].content,
-          date: commentList[j].comment_date,
-          commentId: commentList[j].comment_id
-        }
-        newCommentList.push(comment);
-      }
     }
   }
 
@@ -72,10 +57,11 @@ function Post({ selectedPost, state, setState }) {
   const handleSubmit = () => {
 
     const comment = {
-      userId: state.userId,
-      postId: selectedPost,
+      user_id: state.userId,
+      user_name: state.userName,
+      post_id: selectedPost,
       content: newComment,
-      commentDate: dateFormat(Date.now(), 'isoUtcDateTime')
+      date: dateFormat(Date.now(), 'isoUtcDateTime')
     }
 
     axios.post('http://localhost:8080/api/newComment', comment)
@@ -90,11 +76,11 @@ function Post({ selectedPost, state, setState }) {
     setNewComment('');
   }
   
-  const postCommentList = newCommentList.map((commentInfo) => {
+  const postCommentList = commentList.map((commentInfo) => {
     return(
       <CommentBox 
-        key={commentInfo.commentId}
-        userName={commentInfo.userName}
+        key={commentInfo.comment_id}
+        userName={commentInfo.user_name}
         content={commentInfo.content}
         date={commentInfo.date}
       />

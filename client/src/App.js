@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,6 +31,7 @@ function App() {
     userId: '',
     userName: '',
     email: '',
+    token: '',
     users: [],
     posts: [],
     comments: [],
@@ -39,23 +39,6 @@ function App() {
   });
 
   const [selectedPost, setSelectedPost] = useState(null);
-
-  const url = 'http://localhost:8080';
-
-  useEffect(() => {
-    Promise.all([
-      axios.get(`${url}/api/getUsers`),
-      axios.get(`${url}/api/getPosts`),
-      axios.get(`${url}/api/getComments`)
-    ]).then((all) => {
-      setState((prev) => ({
-        ...prev,
-        users: all[0].data,
-        posts: all[1].data,
-        comments: all[2].data
-      }));
-    });
-  }, []);
 
   return (
     <Router>
