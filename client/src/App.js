@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,7 @@ import Post from './components/Post';
 import { makeStyles } from '@material-ui/styles';
 import './App.css';
 import { Fragment } from 'react';
+import getInfo from './helperFunctions/GetInfo';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -39,6 +40,17 @@ function App() {
   });
 
   const [selectedPost, setSelectedPost] = useState(null);
+  
+  useEffect(() => {
+  if (localStorage.getItem("token")) {
+    state.isLoggedIn = true;
+    getInfo(setState);  
+  }
+  }, [])
+
+  if (!localStorage.getItem("token")) {
+    state.isLoggedIn = false;
+  }
 
   return (
     <Router>
@@ -57,10 +69,15 @@ function App() {
                   }
             </Route>
             <Route path="/register">
-              <Register 
-                setState={setState}
-                state={state}
-              />
+              {
+                state.isLoggedIn ?
+                <Redirect to="/feed" />
+                :
+                <Register 
+                  setState={setState}
+                  state={state}
+                />
+              }
             </Route>
             <Route path="/feed">
               {

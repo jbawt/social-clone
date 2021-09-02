@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/styles';
+import getInfo from '../helperFunctions/GetInfo';
 import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
@@ -102,33 +103,15 @@ function Login({ setState, state }) {
             userId: response.data.data[0].user_id,
             userName: response.data.data[0].user_name,
             email: response.data.data[0].email,
-            token: response.data.accessToken,
-            isLoggedIn: true
+            isLoggedIn: true,
           })
+          localStorage.setItem("token", response.data.accessToken);
           toast.success("Login successful", { autoClose: 3000, hideProgressBar: true });
         }
         // return response;
       })
       .then(() => {
-        const url = 'http://localhost:8080';
-        const options = {
-          headers: {
-            'authorization': state.token
-          }
-        }
-
-          Promise.all([
-            axios.get(`${url}/api/getUsers`, options),
-            axios.get(`${url}/api/getPosts`, options),
-            axios.get(`${url}/api/getComments`, options)
-          ]).then((all) => {
-            setState((prev) => ({
-              ...prev,
-              users: all[0].data,
-              posts: all[1].data,
-              comments: all[2].data
-            }));
-          });
+        getInfo(setState);
       })
       .catch(err => console.log(err));
   }

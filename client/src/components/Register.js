@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 
 import { makeStyles } from '@material-ui/styles';
 import axios from 'axios';
+import getInfo from '../helperFunctions/GetInfo';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -103,12 +104,16 @@ function Register({ setState, state }) {
       .then(response => {
           setState({
             ...state,
-            userId: response.data[0].user_id,
-            userName: response.data[0].user_name,
-            email: response.data[0].email,
+            userId: response.data.data[0].user_id,
+            userName: response.data.data[0].user_name,
+            email: response.data.data[0].email,
             isLoggedIn: true
-          })
+          });
+          localStorage.setItem("token", response.data.accessToken);
           toast.success("Successfully registered", { autoClose: 3000, hideProgressBar: true });
+      })
+      .then(() => {
+        getInfo(setState);
       })
       .catch(err => console.log(err));
   }

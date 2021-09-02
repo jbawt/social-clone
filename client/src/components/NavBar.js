@@ -85,8 +85,8 @@ function NavBar({state, setState}) {
       userId: '',
       userName: '',
       email: '',
-      isLoggedIn: false
     })
+    localStorage.clear();
     toast.error("Logout successful", { hideProgressBar: true, autoClose: 3000 });
   }
 
